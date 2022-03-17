@@ -1,0 +1,4 @@
+#ifndef SHITFAND_H_INCLUDED
+#define SHITFAND_H_INCLUDED
+
+#endif
