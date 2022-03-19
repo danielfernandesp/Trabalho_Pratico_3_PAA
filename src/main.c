@@ -53,3 +53,5 @@ int main(int argc, char const *argv[]) {
   ShiftAndAproximado(Txt,strlen(Txt),Padrao,P,k,Operacoes); //Chamando algoritmo ShiftAndAprox
   return 0;
 }
+
+

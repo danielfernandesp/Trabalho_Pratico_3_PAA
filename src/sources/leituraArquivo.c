@@ -9,10 +9,12 @@ char* LeituraArquivo(char * Entrada){
   char Buffer[33];  //Buffer para leitura de palavra por palavra
   char * ArqSaida = (char*)calloc(1000000,sizeof(char)); //Variavel para armazenamento de texto.Texto maximo suportado: 1000000 de caracteres;
   f = fopen(Entrada,"r");
+  
   if(f==NULL){
     printf("Erro durante abertura de arquivo!\n");
     return NULL;
   }
+
   else{
     strcpy(ArqSaida,"\0");  //Inicialmente atribuimos \0 para declarar variaveis string vazias.
     strcpy(Buffer,"\0");
