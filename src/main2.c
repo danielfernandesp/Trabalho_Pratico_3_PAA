@@ -6,6 +6,7 @@
 #include "headers/shiftAnd.h"
 #include "headers/timing.h"
 #include "headers/leituraArquivo.h"
+
 #define DEBUG 1
 
 int main(int argc, char const *argv[]) {
@@ -19,26 +20,11 @@ int main(int argc, char const *argv[]) {
   scanf("%s",Padrao);
   int P = strlen(Padrao);  //Atribuindo tamanho do padrao entrado.
   printf("\nAlgoritmo Shift-And: \n");
-  if(DEBUG){
-    IniciarTimer(&timer);  //Caso DEBUG esteja ativado, tempo é computado e impresso
-    ShiftAnd(Padrao,Txt,P,strlen(Txt));  //Chamando algoritmo ShiftAnd
-    PararTimer(&timer);
-    printf("\n-> O tempo de execucao do algoritmo Shift-And foi de %lf segundos\n\n", TempoTotal(timer));
-  }
-  else{
-    ShiftAnd(Padrao,Txt,P,strlen(Txt));
-  }
+  ShiftAnd(Padrao,Txt,P,strlen(Txt));
+  
   printf("\nAlgoritmo BMH: \n");
-  if(DEBUG){
-    IniciarTimer(&timer); //Caso DEBUG esteja ativado, tempo é computado e impresso
-    BMH(Txt,strlen(Txt),Padrao,P); //Chamando algoritmo BMH
-    PararTimer(&timer);
-    printf("\n-> O tempo de execucao do algoritmo BMH foi de %lf segundos\n\n", TempoTotal(timer));
-  }
-  else{
-    BMH(Txt,strlen(Txt),Padrao,P);
-  }
-
+  BMH(Txt,strlen(Txt),Padrao,P);
+  
   free(Txt);  //Liberando memoria dinamica usada pelo texto de entrada.
   return 0;
 }

@@ -12,7 +12,7 @@ void ShiftAnd(char * P, char * T,int m,int n){ //Algoritmo ShiftAnd
   int R;
   int i;
   int * M;
-  M =FazMascara(P,m); //Inicialmente é chamado metodo para criar mascara para o padrao
+  M = FazMascara(P,m); //Inicialmente é chamado metodo para criar mascara para o padrao
   R = 0;
   for(i = 0; i < n; i++){ //Em seguida busca ShiftAnd é realizada
       R = (((R >> 1) | (1 << (m-1)) ) & M[T[i]]);
