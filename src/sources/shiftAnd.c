@@ -1,24 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "../headers/shiftAnd.h"
+#include "../headers/frequencia.h"
 
-int * FazMascara(char * P,int m){  //Realiza o alocamento e preenchimento da mascara do padrao
+int * FazMascara(char * padrao,int tamanhoPadrao) //Realiza o alocamento e preenchimento da mascara do padrao
+{  
   int * M;
   M = (int *)calloc(256, sizeof(int)); //128
-  for(int i=0;i < m; i++){
-    M[P[i]] = M[P[i]] | 1 << (m-i-1);
+  for(int i=0;i < tamanhoPadrao; i++){
+    M[padrao[i]] = M[padrao[i]] | 1 << (tamanhoPadrao-i-1);
   }
   return M;
 }
-void ShiftAnd(char * P, char * T,int m,int n){ //Algoritmo ShiftAnd
-  int R;
-  int i;
+
+void ShiftAnd(Analise_frequencia f[TAMALFABETO], Texto *t, char * padrao, char * texto, int tamanhoPadrao)
+{ 
+  int tamanhoTexto = strlen(t->textoDecifrado);
+  int R, ocorrencias = 0;
   int * M;
-  M = FazMascara(P,m); //Inicialmente é chamado metodo para criar mascara para o padrao
+
+  int inicial, final;
+
+  M = FazMascara(padrao,tamanhoPadrao); //Inicialmente é chamado metodo para criar mascara para o padrao
   R = 0;
-  for(i = 0; i < n; i++){ //Em seguida busca ShiftAnd é realizada
-      R = (((R >> 1) | (1 << (m-1)) ) & M[T[i]]);
-      if((R & 1) != 0){
-          printf("\t--> Casamento na posicao: %3d <--\n", i - m + 2);
-      }
+
+  for(int i = 0; i < tamanhoTexto; i++){ //Em seguida busca ShiftAnd é realizada
+    R = (((R >> 1) | (1 << (tamanhoPadrao-1)) ) & M[t->textoOriginal[i]]);
+    if((R & 1) != 0){ // somente onde houve casamento (onde não há sequencias de 0's)   
+      inicial =  i - tamanhoPadrao + 1;
+      //printf("* %d",inicial);
+      final = inicial + tamanhoPadrao - 1;
+      //printf("\n");
+      //printf("** %d", final);
+      ocorrencias++;
+      printf("\t--> Casamento na posicao: %3d <--\n", i - tamanhoPadrao + 2);
+      marcaPosicao(f, t, inicial, final, padrao);
+    }
   }
+  printf("Ocorrencias: %d\n\n", ocorrencias);
   free(M);
 }

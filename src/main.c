@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "headers/BMH.h"
 #include "headers/shiftAnd.h"
-#include "headers/shiftAndAproximado.h" // Para busca no texto parcialmente decifrado
+#include "headers/shiftAndAproximado.h"
 #include "headers/leituraArquivo.h"
 #include "headers/frequencia.h"
 
@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]) {
 
   char* arquivoEntrada;
   int k;
-  char *Padrao = (char*)malloc(sizeof(char)); //memoria dinamicamente alocada para padrao que se desconhece o tamanho
+  char *padrao = (char*)malloc(sizeof(char)); //memoria dinamicamente alocada para padrao que se desconhece o tamanho
   char nomeArquivo[33]; //Variavel para receber nome de abertura de arquivo
 
   while(1){
@@ -52,38 +52,44 @@ int main(int argc, char const *argv[]) {
         case 1:
           if(!inicializado){
             inicializado = inicializa_freq(analise_frequencia);
-            inicializa_texto(texto, arquivoEntrada);
-            imprime_texto_criptografado(texto);
+            inicializa_texto(&texto, arquivoEntrada);
+            imprime_texto_criptografado(&texto);
             imprime_chave(analise_frequencia);
+            imprime_texto_parc_decifrado(&texto);
+            break;
            }else{
             if(!imprime_chave){
-              printf("Erro ao imprimir o estado atual de chaves...o programa será encerrado\n");  
+              printf("ERRO: imprimir o estado atual de chaves...o programa será encerrado\n");  
               exit(0);
             }else{
-              imprime_texto_criptografado(texto);
+              imprime_texto_criptografado(&texto);
               imprime_chave(analise_frequencia);
+              imprime_texto_parc_decifrado(&texto);
+              break;
             }
            }
         case 2:
+          if(calcula_frequencia(&texto,analise_frequencia)){
+            printf("Análise concluída\n");
+            //imprime_frequencia_analise(&texto,analise_frequencia);
+          }else{
+            printf("ERRO: Não foi possível fazer a análise de frequência no texto criptografado \n");
+            break;
+          }
           break;
+        case 3: //shift and aprox
+          if(inicializado){
+            printf("Qual o padrão utilizado?\n ");
+            scanf("%s",padrao);
+            int tamanhoPadrao = strlen(padrao);
+            ShiftAnd(analise_frequencia, &texto,padrao,arquivoEntrada,tamanhoPadrao); 
+            break;
+          }
         default:
           printf("Opcao invalida, tente novamente\n");
       }
     }
   }  
-
-
-  // opcao 2 -  Análise de frequência
-  //conta_letras(analise_frequencia,arquivoEntrada);
-  //frequencia(analise_frequencia);
-  
-  // opcao 3 - Busca no texto criptografado
-
-  //printf("Entre com o padrao: ");
-  //scanf("%s",Padrao);
-
-  //int P = strlen(Padrao); // atribuindo o tamanho do padrão entrado, util para o algoritmo SA
-  //ShiftAnd(Padrao,arquivoEntrada,P,strlen(arquivoEntrada));
 
   // opcao 4 - Busca no texto parcialmente decifrado
 

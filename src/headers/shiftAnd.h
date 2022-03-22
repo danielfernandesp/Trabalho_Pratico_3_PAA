@@ -1,7 +1,8 @@
 #ifndef SHITFAND_H_INCLUDED
 #define SHITFAND_H_INCLUDED
 
-int * FazMascara(char * P,int M);
-void ShiftAnd(char * P, char * T,int m,int n);
+#include "frequencia.h"
 
+int * FazMascara(char *padrao,int tamanhoPadrao);
+void ShiftAnd(Analise_frequencia f[TAMALFABETO], Texto *t, char * padrao, char * texto, int tamanhoPadrao);
 #endif
