@@ -6,9 +6,7 @@
 
 #define TAMALFABETO 26
 
-bool inicializa_texto(Texto *t,char *arquivoEntrada){
-
-
+bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT){
 
   if(arquivoEntrada){
     t->textoOriginal = (char* )calloc(1000000,sizeof(char));
@@ -19,14 +17,17 @@ bool inicializa_texto(Texto *t,char *arquivoEntrada){
       t->textoDecifrado[i] = arquivoEntrada[i];
       t->posicaoMarcada[i] = ' ';
     }
+  }else{
+    return false;
   }
   
-  // colocar 
-
-  for(int i = 'A'; i <= 'Z'; i++){
-    for(int j = 0; j <= TAMALFABETO ; j++){
-        
+  if(arquivoFreqLinguaPT){
+    t->frequenciaAlfabeto = (char*)calloc(1000000,sizeof(char));
+    for(int i=0; arquivoFreqLinguaPT[i] != '\0' ;i++){
+      t->frequenciaAlfabeto[i] = arquivoFreqLinguaPT[i];
     }
+  }else{
+    return false;
   }
 
   return true;
@@ -39,6 +40,7 @@ bool inicializa_freq(Analise_frequencia frequencia[TAMALFABETO]){
       frequencia[i].letraMapeada = ' ';
       frequencia[i].contador = 0;
   }
+  
   return true;
 }
 

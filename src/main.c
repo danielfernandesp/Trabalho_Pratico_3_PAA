@@ -13,11 +13,12 @@ int main(int argc, char const *argv[]) {
   Analise_frequencia analise_frequencia[26];
   Texto texto;
 
-  char* arquivoEntrada;
+  char *arquivoEntrada;
+  char *arquivoFreqTextoPT;
   int k;
   char *padrao = (char*)malloc(sizeof(char)); //memoria dinamicamente alocada para padrao que se desconhece o tamanho
   char nomeArquivo[33]; //Variavel para receber nome de abertura de arquivo
-
+  
   while(1){
 
     bool flagParar, inicializado;
@@ -34,7 +35,10 @@ int main(int argc, char const *argv[]) {
 
     if(arquivoEntrada){
       inicializado = false;
-      flagParar = 0; 
+      flagParar = 0;
+      strcpy(nomeArquivo,'freq_Lingua_Portuguesa');
+      printf("%s", nomeArquivo);
+      arquivoFreqTextoPT = LeituraArquivo(nomeArquivo);
     }
 
     while(flagParar!=1){
@@ -52,7 +56,7 @@ int main(int argc, char const *argv[]) {
         case 1:
           if(!inicializado){
             inicializado = inicializa_freq(analise_frequencia);
-            inicializa_texto(&texto, arquivoEntrada);
+            inicializa_texto(&texto, arquivoEntrada,arquivoFreqTextoPT);
             imprime_texto_criptografado(&texto);
             imprime_chave(analise_frequencia);
             imprime_texto_parc_decifrado(&texto);

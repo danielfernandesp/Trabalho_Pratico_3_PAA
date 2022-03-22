@@ -19,7 +19,7 @@ typedef struct{
     char *frequenciaAlfabeto;
 }Texto;
 
-bool inicializa_texto(Texto *t,char *arquivoEntrada);
+bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT);
 bool inicializa_freq(Analise_frequencia frequencia[TAMALFABETO]);
 void imprime_analise(Analise_frequencia frequencia[TAMALFABETO]);
 void troca(int *xp, int *yp);
