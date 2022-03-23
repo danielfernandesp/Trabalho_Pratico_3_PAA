@@ -12,3 +12,4 @@ typedef char TipoPadrao[MAXTAMPADRAO];
 void shiftAndAproximado(TipoTexto T, long n, TipoPadrao P, long m, long k,int Operacoes[]);
 
 #endif
+

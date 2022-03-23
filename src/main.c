@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "headers/BMH.h"
 #include "headers/shiftAnd.h"
 #include "headers/shiftAndAproximado.h"
 #include "headers/leituraArquivo.h"
-#include "headers/frequencia.h"
+#include "headers/analise.h"
 
 int main(int argc, char const *argv[]) {
 
@@ -17,8 +16,10 @@ int main(int argc, char const *argv[]) {
   char *arquivoFreqTextoPT;
   int k;
   char *padrao = (char*)malloc(sizeof(char)); //memoria dinamicamente alocada para padrao que se desconhece o tamanho
-  char nomeArquivo[33]; //Variavel para receber nome de abertura de arquivo
+  char nomeArquivo[33]; 
   
+  printf("=== TRABALHO 3 - PAA - GRUPO 8 === \n");
+
   while(1){
 
     bool flagParar, inicializado;
@@ -34,14 +35,13 @@ int main(int argc, char const *argv[]) {
     }
 
     if(arquivoEntrada){
+      arquivoFreqTextoPT = "freq_Lingua_Portuguesa"; 
+      arquivoFreqTextoPT = LeituraArquivo(arquivoFreqTextoPT);
       inicializado = false;
       flagParar = 0;
-      strcpy(nomeArquivo,'freq_Lingua_Portuguesa');
-      printf("%s", nomeArquivo);
-      arquivoFreqTextoPT = LeituraArquivo(nomeArquivo);
     }
 
-    while(flagParar!=1){
+    while(flagParar != 1){
 
       int opcao;
 
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[]) {
         case 2:
           if(calcula_frequencia(&texto,analise_frequencia)){
             printf("Análise concluída\n");
-            //imprime_frequencia_analise(&texto,analise_frequencia);
+            imprime_frequencia_analise(&texto,analise_frequencia);
           }else{
             printf("ERRO: Não foi possível fazer a análise de frequência no texto criptografado \n");
             break;
@@ -89,57 +89,16 @@ int main(int argc, char const *argv[]) {
             ShiftAnd(analise_frequencia, &texto,padrao,arquivoEntrada,tamanhoPadrao); 
             break;
           }
+        case 6:
+          printf("Saindo ... obrigado por utilizar o programa!\n ");
+          exit(0);
+          break;
         default:
           printf("Opcao invalida, tente novamente\n");
+          break;
       }
     }
   }  
-
-  // opcao 4 - Busca no texto parcialmente decifrado
-
-
-  /*
-  printf("Entre com o padrao: ");
-  scanf("%s",Padrao);
-  int Operacoes[3];
-  int P = strlen(Padrao); //Atribuindo tamanho do padrao entrado.
-  printf("Entre com o tamanho de k: ");
-  scanf("%d",&k);
-  if(k>=P){ //Caso variavel k sja maior ou igual ao tamanho do padrao, o programa informa sobre condicao de busca
-    printf("O tamanho de k é maior ou igual ao tamanho do padrão!\n");
-  }
-  printf("Deseja utilizar operacao de insercao?\n\t1 - Sim\n\t0 - Nao\n");
-  do{
-    printf("Entre: ");
-    scanf("%d",&Operacoes[0]); //Recebendo escolha do usuario com relacao a opcao de uso de operacao de insercao
-    if(Operacoes[0] !=1 && Operacoes[0] !=0){
-      printf("Erro! Entrada invalida!\n");
-    }
-  }while(Operacoes[0]!=1 && Operacoes[0]!=0);
-
-  printf("Deseja utilizar operacao de remocao?\n\t1 - Sim\n\t0 - Nao\n");
-
-  do{
-    printf("Entre: ");
-    scanf("%d",&Operacoes[1]); //Recebendo escolha do usuario com relacao a opcao de uso de operacao de remocao
-    if(Operacoes[1]!=1 && Operacoes[1]!=0){
-      printf("Erro! Entrada invalida!\n");
-    }
-  }while(Operacoes[1]!=1 && Operacoes[1]!=0);
-
-  printf("Deseja utilizar operacao de substituicao?\n\t1 - Sim\n\t0 - Nao\n");
-  do{
-    printf("Entre: ");
-    scanf("%d",&Operacoes[2]); //Recebendo escolha do usuario com relacao a opcao de uso de operacao de substituicao
-    if(Operacoes[2]!=1 && Operacoes[2]!=0){
-      printf("Erro! Entrada invalida!\n");
-    }
-  }while(Operacoes[2]!=1 && Operacoes[2]!=0);
-  printf("\nAlgoritmo Shift-And Aproximado: \n");
-  
-  ShiftAndAproximado(Txt,strlen(Txt),Padrao,P,k,Operacoes); //Chamando algoritmo ShiftAndAprox
-
-  */
   return 0;
 }
 

@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <ctype.h>
-#include "../headers/frequencia.h"
+#include "../headers/analise.h"
 
 #define TAMALFABETO 26
 
-bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT){
+bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT){ // struct texto
 
   if(arquivoEntrada){
     t->textoOriginal = (char* )calloc(1000000,sizeof(char));
@@ -23,7 +24,7 @@ bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT){
   
   if(arquivoFreqLinguaPT){
     t->frequenciaAlfabeto = (char*)calloc(1000000,sizeof(char));
-    for(int i=0; arquivoFreqLinguaPT[i] != '\0' ;i++){
+    for(int i=0; arquivoFreqLinguaPT[i] != '\0'; i++){ 
       t->frequenciaAlfabeto[i] = arquivoFreqLinguaPT[i];
     }
   }else{
@@ -33,25 +34,26 @@ bool inicializa_texto(Texto *t,char *arquivoEntrada, char *arquivoFreqLinguaPT){
   return true;
 }
 
-bool inicializa_freq(Analise_frequencia frequencia[TAMALFABETO]){
+bool inicializa_freq(Analise_frequencia f[TAMALFABETO])
+{
 
   for(int i='A'; i<='Z'; i++){  
-      frequencia[i].letraAlfabeto = i;
-      frequencia[i].letraMapeada = ' ';
-      frequencia[i].contador = 0;
+      f[i].letraAlfabeto = i;
+      f[i].letraMapeada = ' ';
+      f[i].contador = 0;
   }
-  
+
   return true;
 }
 
-void conta_letras(Analise_frequencia frequencia[TAMALFABETO],Texto *t)
+void conta_letras(Analise_frequencia f[TAMALFABETO],Texto *t)
 {
   int  j;
   for(int i = 'A'; i <= 'Z'; i++) {
         for(int j = 0; t->textoOriginal[j] != '\0'; j++)
         {
           if(t->textoOriginal[j]==i || t->textoOriginal[j] == tolower(i))
-            frequencia[i].contador += 1;
+            f[i].contador += 1;
       }
   }
 }
@@ -70,17 +72,17 @@ bool imprime_texto_criptografado(Texto *t)
   return true;
 }
 
-bool imprime_chave(Analise_frequencia frequencia[TAMALFABETO])
+bool imprime_chave(Analise_frequencia f[TAMALFABETO])
 {
 
   printf("=== CHAVE ===\n");
 
   for(int i='A'; i <='Z';i++){
-    printf("%c",frequencia[i].letraAlfabeto);
+    printf("%c",f[i].letraAlfabeto);
   }
   printf("\n");
   for(int i='A'; i <='Z';i++){
-    printf("%c",frequencia[i].letraMapeada);
+    printf("%c",f[i].letraMapeada);
   }
   printf("\n");
   return true;
@@ -130,69 +132,29 @@ bool calcula_frequencia(Texto *t, Analise_frequencia frequencia[TAMALFABETO])
   for(int i = 'A'; i <= 'Z'; i++) {
       for(int j = 0; t->textoOriginal[j] != '\0'; j++){
         if(t->textoOriginal[j]==i || t->textoOriginal[j] == tolower(i)){
-            frequencia[i].frequencia =100.0*frequencia[i].contador/aux; // Cálculo da porcentagem
+            frequencia[i].frequencia = 100.0*frequencia[i].contador/aux; // Cálculo da porcentagem
           }
       }
   }
   return true;
 }
 
-
-void marcaPosicao(Analise_frequencia f[TAMALFABETO], Texto *t, int inicial, int final, char * padrao)
-{
-  for(int i = 0; t->textoOriginal[i] != '\0'; i++){
-    if(i == inicial || i == final){ 
-      for(int j = 'A'; j <= 'Z'; j++){
-        if(f[j].letraAlfabeto == padrao[i])
-          f[j].letraMapeada = padrao[i];
-      }
-      t->posicaoMarcada[i] = '^';
-      t->textoDecifrado[i] = t->textoOriginal[i];
-    }
-  }
-
-  /*
-  // Prencheer CHAVE de acordo com a frequencia das letras no texto
-  for(int i = 'A'; i <= 'Z'; i++) { 
-    for(int j = 0; t->textoOriginal[j] != '\0'; j++)
-    {
-      if(f[i].contador > 0){
-        
-      }
-    }
-  }*/
-} 
-
-
-
-
-/*
-void imprime_frequencia_analise(Texto *t, Analise_frequencia frequencia[TAMALFABETO])
+void imprime_frequencia_analise(Texto *t, Analise_frequencia f[TAMALFABETO])
 {
   
-  struct Analise_frequencia af_temp;
-
-  int aux;
-
   printf("Letra,\tCont.,\tFreq.\n");
- 
-  for(int i='B'; i < 'Z';i++){
-      for (int j = 'A'; j <= 'Z'; j++) {
-        if(f[i].contador > 0){ // Imprime somente onde há frequencias registradas
-          if (f[i].contador > f[i + 1].contador) {
-            aux =  f[i].contador;
-            f[i].contador =  f[i + 1].contador;
-            f[i+1].contador = aux;
-          }
+
+  for(int i='A'; i <='Z';i++){
+    if(f[i].contador > 0){
       printf("%c\t",f[i].letraAlfabeto);
       printf("%d\t",f[i].contador);
-      printf("%2.f %%\t \n",f[i].frequencia);
-        }
+      printf("%f %%\t \n",f[i].frequencia*100);
     }
   }
 
   printf("\n");
-}*/
+
+}
 
 void imprime_menu(){
     printf("Opções:\n");
@@ -203,4 +165,3 @@ void imprime_menu(){
     printf("5 - Alterar chave de criptografia \n");
     printf("6 - Exportar resultado e encerrar o programa \n");
 }
-

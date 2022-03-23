@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "stdlib.h": "c",
-        "shiftandaproximado.h": "c"
+        "shiftandaproximado.h": "c",
+        "leituraarquivo.h": "c"
     }
 }
